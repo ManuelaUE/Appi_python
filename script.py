@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pymysql.cursors
+import os
+import uuid
+from PIL import Image
 
 app = Flask(__name__)
 CORS(app)
@@ -69,6 +72,59 @@ def ingresar_solicitante():
                 return jsonify({"error": "Usuario o contraseña incorrectos"}), 401
             
     except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route("/ofertante/register", methods=["POST"])
+def registrar_ofertante():
+    try:
+        tipoDocumento = request.form.get("tipoDocumento")
+        numeroDocumento = request.form.get("numeroDocumento")
+        fechaNacimiento = request.form.get("fechaNacimiento")
+        pais = request.form.get("pais")
+        estado = request.form.get("estado")
+        ciudad = request.form.get("ciudad")
+        direccion = request.form.get("direccion")
+        documentoA = request.files["documentoA"]
+        documentoB = request.files["documentoB"]
+        foto = request.files["foto"]
+
+        public_dir = os.path.join("public")
+
+        if not os.path.exists(public_dir):
+            os.makedirs(public_dir)
+
+        nombreDocumentoA = str(uuid.uuid4()) + ".png"
+        nombreDocumentoB = str(uuid.uuid4()) + ".png"
+        nombreFoto = str(uuid.uuid4()) + ".png"
+
+        rutaDocumentoA = os.path.join(public_dir, nombreDocumentoA)
+        rutaDocumentoB = os.path.join(public_dir, nombreDocumentoB)
+        rutaFoto = os.path.join(public_dir, nombreFoto)
+
+        documentoA_img = Image.open(documentoA)
+        documentoA_img.save(rutaDocumentoA)
+        documentoA_img.close()
+
+        documentoB_img = Image.open(documentoB)
+        documentoB_img.save(rutaDocumentoB)
+        documentoB_img.close()
+
+        foto_img = Image.open(foto)
+        foto_img.save(rutaFoto)
+        foto_img.close()
+
+        with db.cursor() as cursor:
+            sql = "INSERT INTO ofertantes (tipo_documento, numero_documento, fecha_nacimiento, pais, estado, ciudad, direccion, document_a, documento_b, foto) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql, (tipoDocumento, numeroDocumento, fechaNacimiento, pais, estado, ciudad, direccion, rutaDocumentoA, rutaDocumentoB, rutaFoto))
+            db.commit()
+
+        return jsonify({"mensaje": "Usuario creado correctamente"}), 201
+    except FileNotFoundError as e:
+        print("Error: Archivo no encontrado -", e)
+        return jsonify({"error": "Error: Archivo no encontrado"}), 404
+            
+    except Exception as e:
+        print(e)
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':

@@ -66,17 +66,16 @@ CREATE TABLE `facturas` (
 
 CREATE TABLE `ofertantes` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `telefono` varchar(45) NOT NULL,
-  `profecion` varchar(45) NOT NULL,
+  `tipo_documento` varchar(45) NOT NULL,
+  `numero_documento` varchar(45) NOT NULL,
   `fecha_nacimiento` varchar(45) NOT NULL,
   `pais` varchar(45) NOT NULL,
   `estado` varchar(45) NOT NULL,
   `ciudad` varchar(45) NOT NULL,
-  `documento_lado_A` blob NOT NULL,
-  `documento_lado_B` blob NOT NULL,
-  `selfie` blob NOT NULL,
-  `correo` varchar(45) NOT NULL
+  `direccion` varchar(45) NOT NULL,
+  `document_a` varchar(255) NOT NULL,
+  `documento_b` varchar(255) NOT NULL,
+  `foto` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
