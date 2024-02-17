@@ -3,6 +3,7 @@ Flask: funciona para el manejo de peticiones HTTP
 PyMySQL: funciona para la conexion a la base de datos
 comando: pip install flask pymysql
 
-Luego iniciamos el servidor usando Flask
+Luego iniciamos el servidor usando Flask 
+comando: python script.py 
 Luego nos conectamos con la base de datos rellenando la informacion
 Luego creamos las funciones  para loguearnos, registrarnos y obtener todos los usuarios
