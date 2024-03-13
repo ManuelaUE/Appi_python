@@ -2,8 +2,10 @@ Primero se instalan los paquetes de flask y pymysql
 Flask: funciona para el manejo de peticiones HTTP
 PyMySQL: funciona para la conexion a la base de datos
 comando: pip install flask pymysql
+Comando para instalar pillow: pip install pillow
+Comando para isntalar Falsk cors: pip install -U flask-cors
 
 Luego iniciamos el servidor usando Flask 
-comando: python script.py 
+comando: python script.py
 Luego nos conectamos con la base de datos rellenando la informacion
 Luego creamos las funciones  para loguearnos, registrarnos y obtener todos los usuarios
